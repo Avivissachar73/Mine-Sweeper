@@ -120,7 +120,8 @@ function checkIfGameOver() {
 //check if the game was, if true, finish the game and let the player know
 function checkIfVictory() {
     if (gGame.isGameOver) return;
-    if (gGame.markedCellsCount + gGame.flagedBombsCount === gGame.boardSize**2) {
+    // if (gGame.markedCellsCount + gGame.flagedBombsCount === gGame.boardSize**2) {
+    if (gGame.markedCellsCount === gGame.boardSize**2 - gGame.amountOfBombs) {
         document.querySelector('.game-container .game-statuse').innerText = VICTORY;
         gameFinish(); 
         checkIfHighScore();
