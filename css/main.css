@@ -1,0 +1,94 @@
+.header {
+    text-align: center;
+}
+
+.game-container {
+    text-align: center;
+}
+
+.game-container .game-statuse {
+    font-size: 200%;
+}
+.game-container .game-statuse:hover {
+    font-size: 225%;
+    cursor: pointer;
+}
+
+.game-container .health {
+    text-align: center;
+}
+
+.game-container .level-buttons-container {
+    text-align: center;
+}
+
+.game-container .level-buttons-container .manual-mod.light-button {
+    background-color: aquamarine;
+}
+.game-container .hint-buttons .hint-area-button.light-button {
+    background-color: aquamarine;
+}
+
+.game-container .score-container {
+    text-align: center;
+}
+.game-container .score-container .time {
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    /* width: 180px; */
+    /* float: right; */
+    display: inline-block;
+}
+
+.game-container .game-board {
+    text-align: center;
+    display: inline-block;
+}
+.game-container .game-board table {
+    background-color: rgb(15, 107, 29);
+    display: inline-block;
+}
+.game-container .game-board .board-cell {
+    background-color: rgba(235, 160, 20, 0.938);
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+.game-container .game-board .board-cell:hover {
+    background-color: lightseagreen;
+    cursor: pointer;
+}
+.game-container .game-board .board-cell.clicked {
+    background-color: burlywood;
+}
+.game-container .game-board .board-cell.bombed {
+    background-color: crimson;
+}
+.game-container .game-board .board-cell.hinted {
+    background-color: antiquewhite;
+}
+
+.game-container .game-button {
+    text-align: center;
+    display: inline-block;
+    background-color: rgb(223, 106, 60);
+    margin: 3px;
+    padding: 5px;
+}
+
+.game-container .stopwatch {
+    font-size: 75%
+}
+
+.footer {
+    text-align: center;
+}
+
+
+@media (max-width: 450px) {
+    .game-container .game-board .board-cell {
+        width: 23px;
+        height: 23px;
+    }
+}

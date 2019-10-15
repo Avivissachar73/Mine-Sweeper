@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mine Sweeper</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body onload="init()" >
+    
+    <div class="header">
+        <h1>Mine Sweeper</h1>
+    </div>
+    <hr/>
+    
+    <div class="game-container">
+        <div onclick="init()" class="game-statuse"></div>
+        <div class="health">
+            <h2>Health: <span></span></h2>
+        </div>
+        <div class="hint-buttons">
+            <button onclick="safeClick(this)" class="game-button safe-button">Safe Click: <span></span></button>
+            <button onclick="areaHintEnable()" class="game-button hint-area-button">Hint an Area: <span></span></button>
+        </div>
+        <div class="score-container">
+            <div class="time high-score"><h3>Best Time: <span></span></h3></div>
+            <div class="time stopwatch"><h2>Time: <span>00:00:00</span></h2></div>
+        </div>
+        <div class="game-board"></div>
+        <div class="level-buttons-container">
+            <button onclick="setLevel(0)" class="game-button">Easy</button>
+            <button onclick="setLevel(1)" class="game-button">Medium</button>
+            <button onclick="setLevel(2)" class="game-button">Hard</button>
+            <button onclick="init()" class="game-button">restart</button>
+            <button onclick="manuallyMinePosEnable()" class="game-button manual-mod">Manual Mine Position</button>
+        </div>
+    </div>
+    
+    <hr/>
+    <div class="footer">
+        <h2>aviv issachar</h2>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/more_functions.js"></script>
+
+</body>
+</html>
