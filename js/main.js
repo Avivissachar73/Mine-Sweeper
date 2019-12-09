@@ -27,7 +27,8 @@ var gGame = {
     amountOfBombs: 0,
     flagedBombsCount: 0,
     markedCellsCount: 0,
-
+    bombedCellsCount: 0,
+// 
     bestTime: +localStorage.getItem('MediumBestTime'),
     bestTimeStr: localStorage.getItem('MediumBestTimeStr'),
 
@@ -55,7 +56,8 @@ function init() {
 
     gGame.flagedBombsCount = 0;
     gGame.markedCellsCount = 0;
-    gGame.amountOfBombs = 0;
+    gGame.bombedCellsCount = 0;
+    // gGame.amountOfBombs = 0;
     gGame.safeClickCount = 3;
     gGame.areaHintCount = 3;
 
@@ -120,7 +122,7 @@ function checkIfGameOver() {
 //check if the game was, if true, finish the game and let the player know
 function checkIfVictory() {
     if (gGame.isGameOver) return;
-    // if (gGame.markedCellsCount + gGame.flagedBombsCount === gGame.boardSize**2) {
+    // if (gGame.markedCellsCount + gGame.flagedBombsCount + gGame.bombedCellsCount === gGame.boardSize**2) {
     if (gGame.markedCellsCount === gGame.boardSize**2 - gGame.amountOfBombs) {
         document.querySelector('.game-container .game-statuse').innerText = VICTORY;
         gameFinish(); 
@@ -243,10 +245,12 @@ function checkCellsContents(elCell, currCell, currPos) {
     if (currCell.isBomb) {
         gGame.health--;
         renderHealth();
-        gGame.markedCellsCount++;
-        currCell.isMarked = true;
+        // gGame.markedCellsCount++;
+        gGame.bombedCellsCount++;
+        // currCell.isMarked = true;
         elCell.innerText = BOMB;
         elCell.classList.add('bombed');
+        currCell.isMarked = true;
         checkIfGameOver();
         checkIfVictory();
         return;
