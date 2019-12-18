@@ -57,7 +57,7 @@ function init() {
     gGame.flagedBombsCount = 0;
     gGame.markedCellsCount = 0;
     gGame.bombedCellsCount = 0;
-    // gGame.amountOfBombs = 0;
+    gGame.amountOfBombs = 0;
     gGame.safeClickCount = 3;
     gGame.areaHintCount = 3;
 
@@ -186,6 +186,8 @@ function cellFlag(elCell) {
     //check the cells contant if left click
 function cellClicked(elCell, event) {
     if (gGame.isGameOver) return;
+
+    console.log(gGame.amountOfBombs);
 
     var currPos = getCellPos(elCell);
     var currCell = gGame.board[currPos.i][currPos.j];
