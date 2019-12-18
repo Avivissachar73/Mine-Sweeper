@@ -187,8 +187,6 @@ function cellFlag(elCell) {
 function cellClicked(elCell, event) {
     if (gGame.isGameOver) return;
 
-    console.log(gGame.amountOfBombs);
-
     var currPos = getCellPos(elCell);
     var currCell = gGame.board[currPos.i][currPos.j];
 
