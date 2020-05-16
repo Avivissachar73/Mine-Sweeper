@@ -9,10 +9,11 @@ const VICTORY = 'You Win!\n🤠';
 const HIGH_SCORE = 'You Win!\n🤯\n You Broke The High Score!';
 
 const LEVELS = [{idx: 0,level: 'Easy',boardSize: 4, amountOfBombs: 2, health: 1}, 
-                 {idx: 1,level: 'Medium',boardSize: 8, amountOfBombs: 12, health: 3}, 
-                 {idx: 2,level: 'Hard',boardSize: 12, amountOfBombs: 30, health: 5}];
+                {idx: 1,level: 'Medium',boardSize: 8, amountOfBombs: 12, health: 3}, 
+                {idx: 2,level: 'Hard',boardSize: 12, amountOfBombs: 30, health: 5}];
 
 //global variable
+
 var gGame = {
     board: null,
 
@@ -43,7 +44,7 @@ var gGame = {
     timerInterval: null,
     startTime: null,
     endTime: null,
-    totalGameTime: null
+    totalGameTime: null,
 }
 
 //restart and set the game
@@ -88,6 +89,11 @@ function init() {
     document.querySelector('.game-container .hint-buttons .hint-area-button span').innerText = gGame.areaHintCount;
     document.querySelector('.game-container .high-score h3 span').innerText = (gGame.bestTimeStr)? gGame.bestTimeStr : 'There is no best time..';
     document.querySelector('.game-container .stopwatch span').innerText = '00:00:00';
+
+    gPrevStates = [];
+    gCurrStateIdx = -1;
+    gGame.playCount = 0;
+    setNewState();
 }
 
 //update health to html
@@ -204,19 +210,20 @@ function cellClicked(elCell, event) {
         }
         gGame.isAreaHint = false;
         areaHint(currPos);
-        return;
+        // return;
+    } else {
+        if (currCell.isMarked) return;
+        if (gGame.isFirstClick) firstClick(currPos);
+    
+        if (event.button === 2) {
+            cellFlag(elCell);
+        }
+        else if (event.button === 0) {
+            checkCellsContents(elCell, currCell, currPos);
+        }
     }
+    setNewState();
 
-    if (gGame.isFirstClick) firstClick(currPos);
-
-    if (event.button === 2) {
-        cellFlag(elCell);
-        return
-    }
-
-    else if (event.button === 0) {
-        checkCellsContents(elCell, currCell, currPos);
-    }
 }
 
 //if first click, start the game and the timer interval, if it is not a manual mine pos mod, spred mines on the board,
@@ -315,7 +322,17 @@ function renderBoard(board) {
     for (var i = 0; i < board.length; i++) {
         boardStr += '<tr>';
         for (var j = 0; j < board[0].length; j++) {
-            boardStr += `<td onmousedown="cellClicked(this, event)" class="board-cell cell-${i}-${j}"></td>`
+            var currCell = board[i][j];
+            var className = currCell.isMarked? 'clicked' : '';
+            var innerTxt = '';
+            if (currCell.isMarked) {
+                if (currCell.isBomb) {
+                    innerTxt = BOMB;
+                    className += ' bombed';
+                } else innerTxt = currCell.bombsAroundCell || '';
+            } else if (currCell.isFlaged) innerTxt = FLAG;
+
+            boardStr += `<td onmousedown="cellClicked(this, event)" class="board-cell cell-${i}-${j} ${className}">${innerTxt}</td>`
         }
         boardStr += '</tr>';
     }

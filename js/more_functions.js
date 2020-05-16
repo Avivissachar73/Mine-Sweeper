@@ -187,3 +187,42 @@ function createStopWatchStrPart(stopWatchPart, limit) {
 
     return timePartStr;
 }
+
+
+
+
+
+
+
+// redoUnDO functionality;
+
+
+var gPrevStates = [];
+var gCurrStateIdx = -1;
+
+function setNewState() {
+    let newState = JSON.parse(JSON.stringify(gGame));
+    gPrevStates.splice(gCurrStateIdx+1, gPrevStates.length-gCurrStateIdx, newState);
+    gCurrStateIdx = gPrevStates.length-1;
+    gGame.playCount++;
+}
+
+function reDo() {
+    if (gCurrStateIdx >= gPrevStates.length-1) return;
+    gCurrStateIdx++;
+    reRender();
+}
+
+function unDo() {
+    if (gCurrStateIdx <= 0) return;
+    gCurrStateIdx--;
+    reRender();
+}
+
+function reRender() {
+    var prevState = JSON.parse(JSON.stringify(gPrevStates[gCurrStateIdx]));
+    gGame = prevState;
+    
+    renderBoard(gGame.board);
+    renderHealth();
+}
