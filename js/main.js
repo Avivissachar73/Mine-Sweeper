@@ -50,7 +50,7 @@ var gGame = {
 //restart and set the game
 //rest the globlal variables and render the game board and information to the document
 function init() {
-    document.oncontextmenu = function() {return false;} //disable the right click context menu.
+    // document.oncontextmenu = function() {return false;} //disable the right click context menu.
     
     gGame.isGameOver = false;
     gGame.isGameOn = false;
@@ -128,8 +128,8 @@ function checkIfGameOver() {
 //check if the game was, if true, finish the game and let the player know
 function checkIfVictory() {
     if (gGame.isGameOver) return;
-    // if (gGame.markedCellsCount + gGame.flagedBombsCount + gGame.bombedCellsCount === gGame.boardSize**2) {
-    if (gGame.markedCellsCount === gGame.boardSize**2 - gGame.amountOfBombs) {
+    if (gGame.markedCellsCount + gGame.flagedBombsCount + gGame.bombedCellsCount === gGame.boardSize**2) {
+    // if (gGame.markedCellsCount === gGame.boardSize**2 - gGame.amountOfBombs) {
         document.querySelector('.game-container .game-statuse').innerText = VICTORY;
         gameFinish(); 
         checkIfHighScore();
@@ -160,7 +160,9 @@ function revealBombs() {
 }
 
 //draw or undraw a flag on a cell on a right click
-function cellFlag(elCell) {
+function cellFlag(elCell, ev) {
+    ev.preventDefault();
+    if (!gGame.isGameOn) return;
     if (gGame.isGameOver) return;
 
     var currPos = getCellPos(elCell);
@@ -183,6 +185,7 @@ function cellFlag(elCell) {
         currCell.isFlaged = true;
         checkIfVictory();
     }
+    setNewState();
 }
 
 //when a cell is clicked:
@@ -215,12 +218,13 @@ function cellClicked(elCell, event) {
         if (currCell.isMarked) return;
         if (gGame.isFirstClick) firstClick(currPos);
     
-        if (event.button === 2) {
-            cellFlag(elCell);
-        }
-        else if (event.button === 0) {
-            checkCellsContents(elCell, currCell, currPos);
-        }
+        // if (event.button === 2) {
+        //     cellFlag(elCell);
+        // }
+        // else if (event.button === 0) {
+        //     checkCellsContents(elCell, currCell, currPos);
+        // }
+        checkCellsContents(elCell, currCell, currPos);
     }
     setNewState();
 
@@ -332,7 +336,8 @@ function renderBoard(board) {
                 } else innerTxt = currCell.bombsAroundCell || '';
             } else if (currCell.isFlaged) innerTxt = FLAG;
 
-            boardStr += `<td onmousedown="cellClicked(this, event)" class="board-cell cell-${i}-${j} ${className}">${innerTxt}</td>`
+            // boardStr += `<td onmousedown="cellClicked(this, event)" class="board-cell cell-${i}-${j} ${className}">${innerTxt}</td>`
+            boardStr += `<td oncontextmenu="cellFlag(this, event)" onclick="cellClicked(this, event)" class="board-cell cell-${i}-${j} ${className}">${innerTxt}</td>`
         }
         boardStr += '</tr>';
     }
@@ -370,11 +375,16 @@ function nbrBombsCount(board, cellPos) {
 
 //spred random bombs on the board;
 function spreadBombs(board, amountOfBombs, startPos) {
+    function isNeg(i, j) {
+        var absI = Math.abs(startPos.i - i);
+        var absJ = Math.abs(startPos.j - j);
+        return (absI <= 1 && absJ <= 1);
+    }
     for (var i = 0; i < amountOfBombs; i++) {
         var randIPos = getRandomInt(0, board.length-1);
         var randJPos = getRandomInt(0, board[0].length-1);
     
-        while (board[randIPos][randJPos].isBomb || randIPos === startPos.i && randJPos === startPos.j) { 
+        while (board[randIPos][randJPos].isBomb || randIPos === startPos.i && randJPos === startPos.j || isNeg(randIPos, randJPos)) { 
             randIPos = getRandomInt(0, board.length-1);
             randJPos = getRandomInt(0, board[0].length-1);
         }
